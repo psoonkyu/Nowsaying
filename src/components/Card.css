@@ -1,0 +1,11 @@
+.toss-card {
+  background-color: var(--toss-white);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  width: 100%;
+}
+
+.toss-card.clickable {
+  cursor: pointer;
+}

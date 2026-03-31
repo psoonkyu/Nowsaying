@@ -1,0 +1,79 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+:root {
+  --toss-blue: #3182f6;
+  --toss-blue-hover: #1b64da;
+  --toss-bg: #f2f4f6;
+  --toss-white: #ffffff;
+  --text-primary: #191f28;
+  --text-secondary: #8b95a1;
+  --border-color: #e5e8eb;
+  
+  --radius-card: 20px;
+  --radius-button: 12px;
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.04);
+  --shadow-nav: 0 -4px 16px rgba(0,0,0,0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #000; /* Dark outside mobile area */
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  display: flex;
+  justify-content: center;
+}
+
+#root {
+  width: 100%;
+  max-width: 480px; /* Mobile View limit */
+  min-height: 100vh;
+  background-color: var(--toss-bg);
+  position: relative;
+  overflow-x: hidden;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Common Toss Animations */
+.active-bounce:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+.active-bounce {
+  transition: transform 0.2s ease;
+}
+
+/* Page transitions / layouts */
+main {
+  flex: 1;
+  padding-bottom: 80px; /* Space for bottom nav */
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.page-container {
+  padding: 24px 20px;
+}

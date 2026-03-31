@@ -1,0 +1,108 @@
+.map-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: 70px; /* Space for BottomNav */
+  box-sizing: border-box;
+  background-color: var(--toss-bg);
+}
+
+.map-view {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f3f5;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 20px 20px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.leaflet-map-root {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.map-msg {
+  color: var(--toss-gray-600);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Toss Map Tooltip (shows latest post) */
+.toss-map-tooltip {
+  background-color: var(--toss-blue);
+  color: var(--toss-white);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: inherit;
+}
+
+.toss-map-tooltip::before {
+  border-top-color: var(--toss-blue) !important;
+  transition: border-color 0.3s ease;
+}
+
+/* Female overrides */
+.toss-map-tooltip.female {
+  background-color: #f7729b;
+}
+
+.toss-map-tooltip.female::before {
+  border-top-color: #f7729b !important;
+}
+
+/* Other users' posts on map */
+.other-post-tooltip {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: inherit;
+}
+
+.other-post-tooltip::before {
+  border-right-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Recenter Button */
+.recenter-btn-container {
+  position: absolute;
+  bottom: 24px;
+  right: 16px;
+  z-index: 1000;
+}
+
+.recenter-btn {
+  background-color: var(--toss-white);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.recenter-btn:active {
+  transform: scale(0.92);
+}
