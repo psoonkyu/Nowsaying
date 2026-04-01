@@ -39,14 +39,21 @@
   border: none;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  max-width: 260px;
+  font-family: inherit;
+  pointer-events: auto !important;
+}
+
+.toss-map-tooltip .tooltip-clickable-area {
   padding: 8px 14px;
   font-weight: 600;
   font-size: 0.95rem;
-  max-width: 220px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: inherit;
+  line-height: 1.4rem;
+  box-sizing: border-box;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: keep-all;
 }
 
 .toss-map-tooltip::before {
@@ -70,18 +77,26 @@
   border: none;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 0;
+  max-width: 260px;
+  font-family: inherit;
+  pointer-events: auto !important;
+}
+
+.other-post-tooltip .tooltip-clickable-area {
   padding: 6px 12px;
   font-size: 0.9rem;
-  max-width: 180px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: inherit;
+  line-height: 1.4rem;
+  box-sizing: border-box;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: keep-all;
 }
 
 .other-post-tooltip::before {
   border-right-color: rgba(255, 255, 255, 0.95) !important;
 }
+
 
 /* Recenter Button */
 .recenter-btn-container {
@@ -105,4 +120,9 @@
 
 .recenter-btn:active {
   transform: scale(0.92);
+}
+
+.toss-map-tooltip,
+.other-post-tooltip {
+  cursor: pointer;
 }

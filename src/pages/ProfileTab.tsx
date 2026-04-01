@@ -3,7 +3,7 @@ import { User, Navigation } from 'lucide-react';
 import './ProfileTab.css';
 
 export default function ProfileTab({ 
-  userName = '토스유저', 
+  userName = '',
   setUserName,
   gender = 'male',
   setGender,

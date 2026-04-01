@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMap, Circle } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Tooltip, useMap, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import { LocateFixed } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
@@ -65,7 +65,18 @@ export default function MapTab({
   const [position, setPosition] = useState<[number, number] | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const focusOffset = location.state ? [location.state.focusLatOffset, location.state.focusLngOffset] as [number, number] : undefined;
+  const [focusOffset] = useState<[number, number] | undefined>(
+    location.state && typeof location.state.focusLatOffset === 'number'
+      ? [location.state.focusLatOffset, location.state.focusLngOffset]
+      : undefined
+  );
+  const focusPostIdFromNav = location.state?.focusPostId || null;
+
+  useEffect(() => {
+    if (location.state) {
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const myLatestPost = posts.find((p) => p.author === userName);
   const otherPosts = posts.filter(p => p.author !== userName);
@@ -101,7 +112,7 @@ export default function MapTab({
         ) : !position ? (
           <div className="map-msg">위치 탐색 중...</div>
         ) : (
-          <MapContainer center={position} zoom={16} zoomControl={false} className="leaflet-map-root">
+          <MapContainer center={position} zoom={16} zoomControl={false} doubleClickZoom={false} className="leaflet-map-root">
             <TileLayer
               attribution='&copy; OpenStreetMap'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -114,22 +125,43 @@ export default function MapTab({
               pathOptions={{ fillColor: 'var(--toss-blue)', color: 'var(--toss-blue)', weight: 1.5, fillOpacity: 0.1 }}
             />
 
-            <Marker position={position} icon={redIcon} zIndexOffset={1000}>
-              {myLatestPost ? (
-                <Tooltip direction="top" offset={[0, -35]} opacity={1} permanent className={`toss-map-tooltip ${gender === 'female' ? 'female' : ''}`}>
-                  {myLatestPost.content}
-                </Tooltip>
-              ) : (
-                <Popup>현재 나의 위치</Popup>
-              )}
-            </Marker>
+              <Marker position={position} icon={redIcon} zIndexOffset={1000}>
+                {myLatestPost ? (
+                  <Tooltip 
+                    direction="top" 
+                    offset={[0, -35]} 
+                    opacity={1} 
+                    permanent={myLatestPost.id === focusPostIdFromNav}
+                    className={`toss-map-tooltip ${gender === 'female' ? 'female' : ''}`}
+                  >
+                    <div className="tooltip-clickable-area">
+                      <strong style={{ display: 'block', marginBottom: '4px' }}>{userName}</strong>
+                      {myLatestPost.content}
+                    </div>
+                  </Tooltip>
+                ) : (
+                  <Tooltip 
+                    direction="top" 
+                    offset={[0, -35]} 
+                    opacity={1} 
+                    className={`toss-map-tooltip ${gender === 'female' ? 'female' : ''}`}
+                  >
+                    <div className="tooltip-clickable-area" style={{ textAlign: 'center' }}>
+                      <strong style={{ display: 'block', marginBottom: '4px' }}>{userName}</strong>
+                      현재 나의 위치
+                    </div>
+                  </Tooltip>
+                )}
+              </Marker>
 
             {visiblePosts.map(p => (
               <Marker 
                 key={p.id} 
                 position={[position[0] + (p.latOffset || 0), position[1] + (p.lngOffset || 0)]}
                 icon={L.icon({
-                  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                  iconUrl: p.gender === 'female' 
+                    ? 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'
+                    : 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
                   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png',
                   iconSize: [25, 41],
                   iconAnchor: [12, 41],
@@ -137,9 +169,16 @@ export default function MapTab({
                   shadowSize: [41, 41]
                 })}
               >
-                <Tooltip direction="right" permanent className="other-post-tooltip" opacity={0.9}>
-                  <strong style={{ color: 'var(--toss-blue)', marginRight: '4px' }}>{p.author}</strong>
-                  {p.content}
+                <Tooltip 
+                  direction="right" 
+                  permanent={p.id === focusPostIdFromNav}
+                  className={`other-post-tooltip ${p.gender === 'female' ? 'female' : ''}`} 
+                  opacity={0.9}
+                >
+                  <div className="tooltip-clickable-area">
+                    <strong style={{ color: p.gender === 'female' ? '#f7729b' : 'var(--toss-blue)', marginRight: '4px' }}>{p.author}</strong>
+                    {p.content}
+                  </div>
                 </Tooltip>
               </Marker>
             ))}

@@ -14,16 +14,37 @@ export interface Post {
   time: string;
   latOffset?: number;
   lngOffset?: number;
+  gender?: 'male' | 'female';
 }
 
+const generateRandomName = () => {
+  const animals = ['강아지', '고양이', '토끼', '다람쥐', '판다', '여우', '펭귄', '곰', '호랑이', '사자', '거북이', '알파카', '원숭이', '수달', '코알라'];
+  const animal = animals[Math.floor(Math.random() * animals.length)];
+  const number = Math.floor(1000 + Math.random() * 9000); // 1000 to 9999
+  return `${animal}${number}`;
+};
+
+const generateRandomPostMeta = () => {
+  const rMeters = Math.floor(Math.random() * 800) + 50; // 50m to 850m
+  const distanceStr = rMeters < 1000 ? `${rMeters}m` : `${(rMeters/1000).toFixed(1)}Km`;
+  const angle = Math.random() * 2 * Math.PI;
+  const latOffset = (rMeters * Math.cos(angle)) / 111000;
+  const lngOffset = (rMeters * Math.sin(angle)) / 88800;
+  const gender: 'male' | 'female' = Math.random() > 0.5 ? 'male' : 'female';
+  const timeMins = Math.floor(Math.random() * 59) + 1;
+  const time = `${timeMins}분 전`;
+  
+  return { distance: distanceStr, latOffset, lngOffset, gender, time };
+};
+
 export const INITIAL_POSTS: Post[] = [
-  { id: 1, author: '익명1', content: '오늘 날씨 진짜 좋네요! 공원에 사람 많아요.', distance: '12m', time: '방금 전', latOffset: 0.0001, lngOffset: 0.0001 },
-  { id: 2, author: '익명2', content: '근처에 맛있는 커피집 추천해주세요 ㅎㅎ', distance: '800m', time: '5분 전', latOffset: -0.004, lngOffset: 0.005 },
-  { id: 3, author: '익명3', content: '토스인앱용 디자인 퀄리티 무슨일...!', distance: '2.5Km', time: '15분 전', latOffset: 0.015, lngOffset: -0.012 },
+  { id: 1, author: generateRandomName(), content: '오늘 날씨 진짜 좋네요! 공원에 사람 많아요.', ...generateRandomPostMeta() },
+  { id: 2, author: generateRandomName(), content: '근처에 맛있는 커피집 추천해주세요 ㅎㅎ', ...generateRandomPostMeta() },
+  { id: 3, author: generateRandomName(), content: '토스인앱용 디자인 퀄리티 무슨일...!', ...generateRandomPostMeta() },
 ];
 
 function App() {
-  const [userName, setUserName] = useState('토스유저');
+  const [userName, setUserName] = useState(generateRandomName);
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [exploreDistance, setExploreDistance] = useState<'500m' | '1Km' | '3Km'>('1Km');
   const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS);

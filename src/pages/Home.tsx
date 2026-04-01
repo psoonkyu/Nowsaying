@@ -27,12 +27,13 @@ export default function Home({
     if (!newPostContent.trim()) return;
     const newPost: Post = {
       id: Date.now(),
-      author: userName,
+      author: userName || '익명',
       content: newPostContent.trim(),
       distance: '현재 위치',
       time: '방금 전',
       latOffset: 0,
       lngOffset: 0,
+      gender: gender,
     };
     setPosts([newPost, ...posts]);
     setNewPostContent('');
@@ -100,10 +101,10 @@ export default function Home({
           <Card 
             key={post.id} 
             className="post-card"
-            onDoubleClick={() => navigate('/map', { state: { focusLatOffset: post.latOffset || 0, focusLngOffset: post.lngOffset || 0 } })}
+            onClick={() => navigate('/map', { state: { focusLatOffset: post.latOffset || 0, focusLngOffset: post.lngOffset || 0, focusPostId: post.id } })}
           >
             <div className="post-header">
-              <span className="post-author">{post.author}</span>
+              <span className="post-author" style={{ color: post.gender === 'female' ? '#f7729b' : 'var(--toss-blue)' }}>{post.author}</span>
               <span className="post-meta">{post.distance} · {post.time}</span>
             </div>
             <p className="post-content">
